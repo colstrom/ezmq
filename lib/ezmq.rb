@@ -172,6 +172,8 @@ module EZMQ
     attr_accessor :action
 
     # Creates a new Subscriber socket.
+    # 
+    # @note The default behaviour is to output and messages received to STDOUT.
     #
     # @param [lambda] action the action to perform when a message is received.
     # @param [Hash] options optional parameters
@@ -182,7 +184,7 @@ module EZMQ
     #
     # @return [Publisher] a new instance of Publisher.
     #
-    def initialize(action: -> m { m }, **options)
+    def initialize(action: -> m { puts m }, **options)
       @action = action
       super :connect, ZMQ::SUB, options
       subscribe options[:topic] if options[:topic]

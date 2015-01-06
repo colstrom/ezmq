@@ -1,10 +1,10 @@
 Gem::Specification.new do |gem|
   gem.name        = 'ezmq'
-  gem.version     = '0.1.1'
+  gem.version     = '0.1.2'
   gem.licenses    = 'MIT'
   gem.authors     = ['Chris Olstrom']
   gem.email       = 'chris@olstrom.com'
-  gem.homepage    = 'https://github.com/colstrom/ezmq'
+  gem.homepage    = 'http://colstrom.github.io/ezmq/'
   gem.summary     = 'Effortless ZMQ'
   gem.description = 'Syntactic sugar around FFI bindings for ZMQ, to stop C from seeping into your Ruby.'
 
