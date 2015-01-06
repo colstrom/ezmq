@@ -11,7 +11,7 @@ Any of the magical hand-wavey bits (contexts, sockets, etc) are still exposed fo
 Examples
 ========
 
-Most of these examples are trivial, because ZMQ is the fabric, not the g
+Most of these examples are trivial, because ZMQ is just the fabric of your networked application(s).
 
 Echo Server
 -----------
