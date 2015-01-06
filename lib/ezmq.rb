@@ -185,7 +185,7 @@ module EZMQ
     def initialize(action: -> m { m }, **options)
       @action = action
       super :connect, ZMQ::SUB, options
-      subscribe topic: options[:topic] if options[:topic]
+      subscribe options[:topic] if options[:topic]
     end
 
     # Establishes a new message filter on the socket.
