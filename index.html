@@ -61,13 +61,86 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><h1>EZMQ (Effortless ZeroMQ)</h1>
+    <div id="content"><div id='filecontents'><h1><a href="https://colstrom.github.io/ezmq/">EZMQ (Effortless ZeroMQ)</a></h1>
+
+<h2>Overview</h2>
 
 <p>EZMQ is a wrapper around the wonderful <code>ffi-rzmq</code> gem, which (as the name suggests) uses FFI, and exposes a fairly raw C-like interface. As elegant as 0MQ is, C doesn't feel like Ruby, and FFI bindings feel like C. EZMQ makes some reasonable assumptions to help you focus on what makes your code special, and not worry about setting up 0MQ.</p>
 
 <p>Any of the magical hand-wavey bits (contexts, sockets, etc) are still exposed for tinkering, EZMQ just starts you off with some sane defaults.</p>
 
-<h2>Operating System Notes</h2>
+<h1>Examples</h1>
+
+<p>Most of these examples are trivial, because ZMQ is the fabric, not the g</p>
+
+<h2>Echo Server</h2>
+
+<p>Waits for a request, replies with the same request.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_server'>server</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Server</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_server'>server</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span>
+</code></pre>
+
+<h2>Synchronous Client Request</h2>
+
+<p>Sends a message, prints the reply when it arrives.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>test</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<h2>JSON Echo Server</h2>
+
+<p>Waits for JSON message, decodes it, re-encodes it, and sends it back.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_server'>server</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Server</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>encode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>decode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_server'>server</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span>
+</code></pre>
+
+<h2>JSON Synchronous Client Request</h2>
+
+<p>Encodes a message in JSON, sends it twice, prints the first one raw, and decodes the second.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>encode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>test</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span> <span class='op'>=</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>test</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<h2>'foorever' Publisher</h2>
+
+<p>Publishes an endless stream of 'foo's with a topic of 'foorever'.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_publisher'>publisher</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='period'>.</span><span class='const'>Publisher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>topic:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>foorever</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_publisher'>publisher</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>foo</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h2>'foorever' Subscriber</h2>
+
+<p>Subscribes to topic 'foorever', prints any messages it receives.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_subscriber'>subscriber</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='period'>.</span><span class='const'>Subscriber</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>topic:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>foorever</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_subscriber'>subscriber</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span>
+</code></pre>
+
+<h1>Operating System Notes</h1>
 
 <p>As this relies on <a href="https://github.com/chuckremes/ffi-rzmq">ffi-rzmq</a>, you will need to have the zeromq libraries available.</p>
 
@@ -86,7 +159,7 @@ sudo aptitude install libzmq3-dev
 </div></div>
 
     <div id="footer">
-  Generated on Tue Jan  6 12:58:18 2015 by
+  Generated on Tue Jan  6 13:19:57 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
