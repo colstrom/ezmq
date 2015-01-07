@@ -55,7 +55,7 @@ Encodes a message in JSON, sends it twice, prints the first one raw, and decodes
 require 'ezmq'
 require 'json'
 
-client = EZMQ::Client.new encode: -> m { JSON.dump }
+client = EZMQ::Client.new encode: -> m { JSON.dump m }
 puts client.request 'test'
 client.decode = -> m { JSON.load m }
 puts client.request 'test'
