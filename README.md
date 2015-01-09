@@ -47,6 +47,7 @@ server.listen do |message|
   puts message
   'Thanks for the message!' # The return of the block is sent to the client.
 end
+```
 
 JSON Echo Server
 ----------------
