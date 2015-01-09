@@ -167,7 +167,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Publisher) <strong>initialize</strong>(action: -&gt; m { puts m }, **options) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Publisher) <strong>initialize</strong>(**options) </a>
     
 
     
@@ -193,7 +193,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#listen-instance_method" title="#listen (instance method)">- (void) <strong>listen</strong>(handler: -&gt; { @action.call(receive) }) </a>
+      <a href="#listen-instance_method" title="#listen (instance method)">- (void) <strong>listen</strong> {|message| ... }</a>
     
 
     
@@ -208,7 +208,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>By default, waits for a message and calls @action with the message.</p>
+<p>By default, waits for a message and prints it to STDOUT.</p>
 </div></span>
   
 </li>
@@ -282,7 +282,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span></tt>) <strong>initialize</strong>(action: -&gt; m { puts m }, **options) 
+    - (<tt><span class='object_link'><a href="Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span></tt>) <strong>initialize</strong>(**options) 
   
 
   
@@ -310,22 +310,6 @@
   
     <li>
       
-        <span class='name'>action</span>
-      
-      
-        <span class='type'>(<tt>lambda</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the action to perform when a message is received.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>options</span>
       
       
@@ -335,7 +319,7 @@
       
         &mdash;
         <div class='inline'>
-<p>optional parameters</p>
+<p>optional parameters.</p>
 </div>
       
     </li>
@@ -343,8 +327,6 @@
 </ul>
 
   
-    
-    
     
     
     <p class="tag_title">Options Hash (<tt>**options</tt>):</p>
@@ -370,7 +352,7 @@
   <p class="tag_title">See Also:</p>
   <ul class="see">
     
-      <li><span class='object_link'><a href="Socket.html" title="EZMQ::Socket (class)">EZMQ::Socket for a list of optional parameters.</a></span></li>
+      <li><span class='object_link'><a href="Socket.html" title="EZMQ::Socket (class)">EZMQ::Socket for optional parameters.</a></span></li>
     
   </ul>
 
@@ -380,17 +362,15 @@
       <pre class="lines">
 
 
-187
-188
-189
-190
-191</pre>
+218
+219
+220
+221</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 187</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 218</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>action:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
-  <span class='ivar'>@action</span> <span class='op'>=</span> <span class='id identifier rubyid_action'>action</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='symbol'>:connect</span><span class='comma'>,</span> <span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>SUB</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span>
   <span class='id identifier rubyid_subscribe'>subscribe</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:topic</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:topic</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
@@ -432,12 +412,12 @@
       <pre class="lines">
 
 
-172
-173
-174</pre>
+206
+207
+208</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 172</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 206</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_action'>action</span>
   <span class='ivar'>@action</span>
@@ -457,7 +437,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="listen-instance_method">
   
-    - (<tt>void</tt>) <strong>listen</strong>(handler: -&gt; { @action.call(receive) }) 
+    - (<tt>void</tt>) <strong>listen</strong> {|message| ... }
   
 
   
@@ -466,33 +446,51 @@
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>By default, waits for a message and calls @action with the message.</p>
+<p>By default, waits for a message and prints it to STDOUT.</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
   
     <li>
       
-        <span class='name'>handler</span>
       
-      
-        <span class='type'>(<tt>lambda</tt>)</span>
+        <span class='type'></span>
       
       
       
-        &mdash;
+        
         <div class='inline'>
-<p>how requests are handled.</p>
+<p>message passes the message received to the block.</p>
 </div>
       
     </li>
   
 </ul>
-
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>message</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the message received.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -500,15 +498,27 @@
       <pre class="lines">
 
 
-225
-226
-227</pre>
+256
+257
+258
+259
+260
+261
+262
+263
+264</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 225</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 256</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span><span class='lparen'>(</span><span class='label'>handler:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='ivar'>@action</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_receive'>receive</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_loop'>loop</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_handler'>handler</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span>
+  <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+      <span class='kw'>yield</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -592,15 +602,15 @@ provided, #initialize calls #subscribe automatically.</p>
       <pre class="lines">
 
 
-204
-205
-206</pre>
+234
+235
+236</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 204</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 234</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_subscribe'>subscribe</span><span class='lparen'>(</span><span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span>
-  <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_setsockopt'>setsockopt</span><span class='lparen'>(</span><span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>SUBSCRIBE</span><span class='comma'>,</span> <span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
+  <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_setsockopt'>setsockopt</span><span class='lparen'>(</span><span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>SUBSCRIBE</span><span class='comma'>,</span> <span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -672,15 +682,15 @@ set, this will only remove one.</p>
       <pre class="lines">
 
 
-215
-216
-217</pre>
+245
+246
+247</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 215</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 245</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unsubscribe'>unsubscribe</span><span class='lparen'>(</span><span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span>
-  <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_setsockopt'>setsockopt</span><span class='lparen'>(</span><span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>UNSUBSCRIBE</span><span class='comma'>,</span> <span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
+  <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_setsockopt'>setsockopt</span><span class='lparen'>(</span><span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>UNSUBSCRIBE</span><span class='comma'>,</span> <span class='id identifier rubyid_topic'>topic</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -692,7 +702,7 @@ set, this will only remove one.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jan  6 16:40:44 2015 by
+  Generated on Fri Jan  9 13:06:27 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>

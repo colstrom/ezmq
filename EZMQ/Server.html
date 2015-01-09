@@ -116,41 +116,9 @@
 
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#provides-instance_method" title="#provides (instance method)">- (Object) <strong>provides</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute provides.</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
 
 
-
-  
+  <h2>Instance Attribute Summary</h2>
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Socket.html" title="EZMQ::Socket (class)">Socket</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="Socket.html#context-instance_method" title="EZMQ::Socket#context (method)">#context</a></span>, <span class='object_link'><a href="Socket.html#decode-instance_method" title="EZMQ::Socket#decode (method)">#decode</a></span>, <span class='object_link'><a href="Socket.html#encode-instance_method" title="EZMQ::Socket#encode (method)">#encode</a></span>, <span class='object_link'><a href="Socket.html#socket-instance_method" title="EZMQ::Socket#socket (method)">#socket</a></span></p>
@@ -167,7 +135,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Server) <strong>initialize</strong>(provides: -&gt; m { m }, **options) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Server) <strong>initialize</strong>(**options) </a>
     
 
     
@@ -193,7 +161,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#listen-instance_method" title="#listen (instance method)">- (void) <strong>listen</strong>(handler: -&gt; { send @provides.call(receive) }) </a>
+      <a href="#listen-instance_method" title="#listen (instance method)">- (void) <strong>listen</strong> {|message| ... }</a>
     
 
     
@@ -208,8 +176,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>By default, waits to receive a message, calls @action with it, replies with
-the result, then loops.</p>
+<p>Listens for a request, and responds to it.</p>
 </div></span>
   
 </li>
@@ -235,7 +202,7 @@ the result, then loops.</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="EZMQ::Server (class)">Server</a></span></tt>) <strong>initialize</strong>(provides: -&gt; m { m }, **options) 
+    - (<tt><span class='object_link'><a href="" title="EZMQ::Server (class)">Server</a></span></tt>) <strong>initialize</strong>(**options) 
   
 
   
@@ -252,22 +219,6 @@ the result, then loops.</p>
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
-  
-    <li>
-      
-        <span class='name'>provides</span>
-      
-      
-        <span class='type'>(<tt>lambda</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the service provided by this server.</p>
-</div>
-      
-    </li>
   
     <li>
       
@@ -291,7 +242,7 @@ the result, then loops.</p>
   <p class="tag_title">See Also:</p>
   <ul class="see">
     
-      <li><span class='object_link'><a href="Socket.html" title="EZMQ::Socket (class)">EZMQ::Socket for a list of optional parameters.</a></span></li>
+      <li><span class='object_link'><a href="Socket.html" title="EZMQ::Socket (class)">EZMQ::Socket for optional parameters.</a></span></li>
     
   </ul>
 
@@ -301,16 +252,14 @@ the result, then loops.</p>
       <pre class="lines">
 
 
-98
-99
-100
-101</pre>
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 152</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>provides:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
-  <span class='ivar'>@provides</span> <span class='op'>=</span> <span class='id identifier rubyid_provides'>provides</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='symbol'>:bind</span><span class='comma'>,</span> <span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>REP</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -320,54 +269,6 @@ the result, then loops.</p>
   
 </div>
 
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
-      
-      <span id="provides=-instance_method"></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="provides-instance_method">
-  
-    - (<tt>Object</tt>) <strong>provides</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute provides</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-87
-88
-89</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 87</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_provides'>provides</span>
-  <span class='ivar'>@provides</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
-
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -376,7 +277,7 @@ the result, then loops.</p>
       <div class="method_details first">
   <h3 class="signature first" id="listen-instance_method">
   
-    - (<tt>void</tt>) <strong>listen</strong>(handler: -&gt; { send @provides.call(receive) }) 
+    - (<tt>void</tt>) <strong>listen</strong> {|message| ... }
   
 
   
@@ -385,34 +286,71 @@ the result, then loops.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>By default, waits to receive a message, calls @action with it, replies with
-the result, then loops.</p>
+<p>Listens for a request, and responds to it.</p>
+
+<p>If no block is given, responds with the request message.</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
   
     <li>
       
-        <span class='name'>handler</span>
       
-      
-        <span class='type'>(<tt>lambda</tt>)</span>
+        <span class='type'></span>
       
       
       
-        &mdash;
+        
         <div class='inline'>
-<p>how requests are handled.</p>
+<p>message passes the message received to the block.</p>
 </div>
       
     </li>
   
 </ul>
-
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>message</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the message received.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Returns:</p>
+<ul class="yieldreturn">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>void</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the message to reply with.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -420,15 +358,27 @@ the result, then loops.</p>
       <pre class="lines">
 
 
-110
-111
-112</pre>
+166
+167
+168
+169
+170
+171
+172
+173
+174</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 166</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span><span class='lparen'>(</span><span class='label'>handler:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_send'>send</span> <span class='ivar'>@provides</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_receive'>receive</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_loop'>loop</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_handler'>handler</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span>
+  <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+      <span class='id identifier rubyid_send'>send</span> <span class='kw'>yield</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -440,7 +390,7 @@ the result, then loops.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jan  6 16:40:44 2015 by
+  Generated on Fri Jan  9 13:06:26 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
