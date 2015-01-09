@@ -35,6 +35,19 @@ client = EZMQ::Client.new
 puts client.request 'test'
 ```
 
+Confirming Logging Server
+-------------------------
+Waits for a request, prints it to STDOUT, and thanks the client for it.
+
+```
+require 'ezmq'
+
+server = EZMQ::Server.new
+server.listen do |message|
+  puts message
+  'Thanks for the message!' # The return of the block is sent to the client.
+end
+
 JSON Echo Server
 ----------------
 Waits for JSON message, decodes it, re-encodes it, and sends it back.
