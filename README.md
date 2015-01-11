@@ -1,6 +1,8 @@
 [EZMQ (Effortless ZeroMQ)](https://colstrom.github.io/ezmq/)
 ========================
 
+[![Code Climate](https://codeclimate.com/github/colstrom/ezmq/badges/gpa.svg)](https://codeclimate.com/github/colstrom/ezmq)
+
 Overview
 --------
 
