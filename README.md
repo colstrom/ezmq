@@ -1,8 +1,9 @@
 [EZMQ (Effortless ZeroMQ)](https://colstrom.github.io/ezmq/)
 ========================
 
-[![Code Climate](https://codeclimate.com/github/colstrom/ezmq/badges/gpa.svg)](https://codeclimate.com/github/colstrom/ezmq)
+[![Gem Version](https://badge.fury.io/rb/ezmq.svg)](http://badge.fury.io/rb/ezmq)
 [![Dependency Status](https://gemnasium.com/colstrom/ezmq.svg)](https://gemnasium.com/colstrom/ezmq)
+[![Code Climate](https://codeclimate.com/github/colstrom/ezmq/badges/gpa.svg)](https://codeclimate.com/github/colstrom/ezmq)
 
 Overview
 --------
