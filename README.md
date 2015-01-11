@@ -100,6 +100,64 @@ subscriber = EZMQ.Subscriber.new topic: 'foorever'
 subscriber.listen
 ````
 
+Pipeline Work Generator
+------------------------
+Generates work, distributes it to workers via PUSH socket.
+
+```
+require 'ezmq'
+require 'json'
+
+generator = EZMQ::Pusher.new :bind, encode: -> m { JSON.dump m }
+
+15.times do |id|
+  work = { 'id' => "task_#{ id }", 'request' => '100' }
+  puts "Generated work #{work}"
+  generator.send work
+end
+
+```
+
+Pipeline Workers
+---------------
+3 worker threads PULL work from the Generator and PUSH results to the Collector.
+
+The 'work' here is generating a random number between 1 and a requested maximum.
+
+```
+require 'ezmq'
+require 'json'
+
+workers = []
+
+3.times do |id|
+  workers << Thread.new do
+    input = EZMQ::Puller.new :connect, decode: -> m { JSON.load m }
+    output = EZMQ::Pusher.new port: 5556, encode: -> m { JSON.dump m }
+    input.listen do |work|
+      puts "Worker #{id} pulled #{work}"
+      result = rand(1..work['request'].to_i)
+      report = { 'id' => work['id'], 'result' => result }
+      output.send report
+    end
+  end
+end
+
+workers.each(&:join)
+```
+
+Pipeline Results Collector
+--------------------------
+PULLs results from workers and prints it to STDOUT.
+
+```
+require 'ezmq'
+require 'json'
+
+collector = EZMQ::Puller.new port: 5556
+collector.listen
+```
+
 Operating System Notes
 ======================
 
