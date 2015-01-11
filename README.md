@@ -2,6 +2,7 @@
 ========================
 
 [![Code Climate](https://codeclimate.com/github/colstrom/ezmq/badges/gpa.svg)](https://codeclimate.com/github/colstrom/ezmq)
+[![Dependency Status](https://gemnasium.com/colstrom/ezmq.svg)](https://gemnasium.com/colstrom/ezmq)
 
 Overview
 --------
