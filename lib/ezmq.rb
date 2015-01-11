@@ -8,7 +8,7 @@ module EZMQ
 
     # Creates a 0MQ socket.
     #
-    # @param [Symbol] mode the mode of the socket. `:bind` or `:connect`
+    # @param [:bind, :connect] mode the mode of the socket.
     # @param [Object] type the type of socket to use.
     # @param [Hash] options optional parameters.
     #
@@ -16,14 +16,10 @@ module EZMQ
     #   (one will be created if not provided).
     # @option options [lambda] encode how to encode messages.
     # @option options [lambda] decode how to decode messages.
-    # @option options [String] protocol protocol to use for transport.
-    #   Default: 'tcp'
-    # @option options [String] address address to use for endpoint.
-    #   Default: '127.0.0.1'
-    # @note 'localhost' does not always work as expected. Prefer '127.0.0.1'
-    # @option options [Fixnum] port port to use for endpoint.
-    #   Default: 5555
-    # @note `port` is ignored unless protocol is either 'tcp' or 'udp'.
+    # @option options [String] protocol ('tcp') protocol for transport.
+    # @option options [String] address ('127.0.0.1') address for endpoint.
+    # @option options [Fixnum] port (5555) port for endpoint.
+    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
     #
     # @return [Socket] a new instance of Socket.
     #
@@ -37,9 +33,9 @@ module EZMQ
       method(mode).call endpoint
     end
 
-    # Sends a message on the socket.
+    # Sends a message to the socket.
     #
-    # @note If `message` is not a String, `encode` must convert it to one.
+    # @note If message is not a String, #encode must convert it to one.
     #
     # @param [String] message the message to send.
     # @param [Hash] options optional parameters.
@@ -77,11 +73,12 @@ module EZMQ
 
     # Binds the socket to the given address.
     #
-    # @param [String] protocol protocol to use for transport. Default: 'tcp'
-    # @param [String] address address to use for endpoint. Default: '127.0.0.1'
-    # @note 'localhost' does not always work as expected. Prefer '127.0.0.1'
-    # @param [Fixnum] port port to use for endpoint. Default: 5555
-    # @note `port` is ignored unless protocol is either 'tcp' or 'udp'.
+    # @param [String] protocol ('tcp') protocol for transport.
+    # @param [String] address ('127.0.0.1') address for endpoint.
+    # @note An address of 'localhost' is not reliable on all platforms.
+    #   Prefer '127.0.0.1' instead.
+    # @param [Fixnum] port (5555) port for endpoint.
+    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
     #
     # @return [Boolean] was binding successful?
     #
@@ -93,10 +90,10 @@ module EZMQ
 
     # Connects the socket to the given address.
     #
-    # @param [String] protocol protocol to use for transport. Default: 'tcp'
-    # @param [String] address address to use for endpoint. Default: '127.0.0.1'
-    # @param [Fixnum] port port to use for endpoint. Default: 5555
-    # @note `port` is ignored unless protocol is either 'tcp' or 'udp'.
+    # @param [String] protocol ('tcp') protocol for transport.
+    # @param [String] address ('127.0.0.1') address for endpoint.
+    # @param [Fixnum] port (5555) port for endpoint.
+    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
     #
     # @return [Boolean] was connection successful?
     #
@@ -104,6 +101,23 @@ module EZMQ
       endpoint = "#{ protocol }://#{ address }"
       endpoint = "#{ endpoint }:#{ port }" if %w(tcp udp).include? protocol
       @socket.connect(endpoint) == 0
+    end
+
+    # By default, waits for a message and prints it to STDOUT.
+    #
+    # @yield message passes the message received to the block.
+    # @yieldparam [String] message the message received.
+    #
+    # @return [void]
+    #
+    def listen
+      loop do
+        if block_given?
+          yield receive
+        else
+          puts receive
+        end
+      end
     end
   end
 
@@ -245,22 +259,35 @@ module EZMQ
     def unsubscribe(topic)
       @socket.setsockopt(ZMQ::UNSUBSCRIBE, topic) == 0
     end
+  end
 
-    # By default, waits for a message and prints it to STDOUT.
+  # Push socket that sends messages but does not receive them.
+  class Pusher < EZMQ::Socket
+    # Creates a new Pusher socket.
     #
-    # @yield message passes the message received to the block.
-    # @yieldparam [String] message the message received.
+    # @param [:bind, :connect] mode a mode for the socket.
+    # @param [Hash] options optional parameters.
+    # @see EZMQ::Socket EZMQ::Socket for optional parameters.
     #
-    # @return [void]
+    # @return [Pusher] a new instance of Pusher.
     #
-    def listen
-      loop do
-        if block_given?
-          yield receive
-        else
-          puts receive
-        end
-      end
+    def initialize(mode = :connect, **options)
+      super mode, ZMQ::PUSH, options
+    end
+  end
+
+  # Pull socket that receives messages but does not send them.
+  class Puller < EZMQ::Socket
+    # Creates a new Puller socket.
+    #
+    # @param [:bind, :connect] mode a mode for the socket.
+    # @param [Hash] options optional parameters.
+    # @see EZMQ::Socket EZMQ::Socket for optional parameters.
+    #
+    # @return [Puller] a new instance of Puller.
+    #
+    def initialize(mode = :bind, **options)
+      super mode, ZMQ::PULL, options
     end
   end
 end
