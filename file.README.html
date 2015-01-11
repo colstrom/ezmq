@@ -153,6 +153,60 @@
 <span class='id identifier rubyid_subscriber'>subscriber</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span>
 </code></pre>
 
+<h2>Pipeline Work Generator</h2>
+
+<p>Generates work, distributes it to workers via PUSH socket.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Pusher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='symbol'>:bind</span><span class='comma'>,</span> <span class='label'>encode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
+
+<span class='int'>15</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
+  <span class='id identifier rubyid_work'>work</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>task_</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_id'>id</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>request</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>100</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Generated work </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_work'>work</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_generator'>generator</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_work'>work</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h2>Pipeline Workers</h2>
+
+<p>3 worker threads PULL work from the Generator and PUSH results to the Collector.</p>
+
+<p>The 'work' here is generating a random number between 1 and a requested maximum.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_workers'>workers</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+<span class='int'>3</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
+  <span class='id identifier rubyid_workers'>workers</span> <span class='op'>&lt;&lt;</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_input'>input</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Puller</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='symbol'>:connect</span><span class='comma'>,</span> <span class='label'>decode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Pusher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>port:</span> <span class='int'>5556</span><span class='comma'>,</span> <span class='label'>encode:</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_work'>work</span><span class='op'>|</span>
+      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Worker </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_content'> pulled </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_work'>work</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='int'>1</span><span class='op'>..</span><span class='id identifier rubyid_work'>work</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>request</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_report'>report</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_work'>work</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_result'>result</span> <span class='rbrace'>}</span>
+      <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_report'>report</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_workers'>workers</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:join</span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>Pipeline Results Collector</h2>
+
+<p>PULLs results from workers and prints it to STDOUT.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ezmq</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_collector'>collector</span> <span class='op'>=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Puller</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='label'>port:</span> <span class='int'>5556</span>
+<span class='id identifier rubyid_collector'>collector</span><span class='period'>.</span><span class='id identifier rubyid_listen'>listen</span>
+</code></pre>
+
 <h1>Operating System Notes</h1>
 
 <p>As this relies on <a href="https://github.com/chuckremes/ffi-rzmq">ffi-rzmq</a>, you will need to have the zeromq libraries available.</p>
@@ -172,7 +226,7 @@ sudo aptitude install libzmq3-dev
 </div></div>
 
     <div id="footer">
-  Generated on Fri Jan  9 14:54:16 2015 by
+  Generated on Sun Jan 11 14:20:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>

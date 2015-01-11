@@ -112,7 +112,7 @@
 
 </div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="Client.html" title="EZMQ::Client (class)">Client</a></span>, <span class='object_link'><a href="Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span>, <span class='object_link'><a href="Server.html" title="EZMQ::Server (class)">Server</a></span>, <span class='object_link'><a href="Subscriber.html" title="EZMQ::Subscriber (class)">Subscriber</a></span></p>
+  <p class="children"><span class='object_link'><a href="Client.html" title="EZMQ::Client (class)">Client</a></span>, <span class='object_link'><a href="Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span>, <span class='object_link'><a href="Puller.html" title="EZMQ::Puller (class)">Puller</a></span>, <span class='object_link'><a href="Pusher.html" title="EZMQ::Pusher (class)">Pusher</a></span>, <span class='object_link'><a href="Server.html" title="EZMQ::Server (class)">Server</a></span>, <span class='object_link'><a href="Subscriber.html" title="EZMQ::Subscriber (class)">Subscriber</a></span></p>
 </div>
 
 
@@ -319,6 +319,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#listen-instance_method" title="#listen (instance method)">- (void) <strong>listen</strong> {|message| ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>By default, waits for a message and prints it to STDOUT.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#receive-instance_method" title="#receive (instance method)">- (Object) <strong>receive</strong>(**options) {|message| ... }</a>
     
 
@@ -358,7 +382,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Sends a message on the socket.</p>
+<p>Sends a message to the socket.</p>
 </div></span>
   
 </li>
@@ -385,15 +409,7 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>&#39;localhost&#39; does not always work as expected. Prefer
-&#39;127.0.0.1&#39;</p>
-</div>
-  </div>
-
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'>
-<p>`port` is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
+<p>port is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
 </div>
   </div>
 
@@ -412,13 +428,13 @@
         <span class='name'>mode</span>
       
       
-        <span class='type'>(<tt>Symbol</tt>)</span>
+        <span class='type'>(<tt>:bind</tt>, <tt>:connect</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>the mode of the socket. `:bind` or `:connect`</p>
+<p>the mode of the socket.</p>
 </div>
       
     </li>
@@ -511,10 +527,13 @@
           <span class="type">(<tt>String</tt>)</span>
           <span class="default">
             
+              &mdash; default:
+              <tt>&#39;tcp&#39;</tt>
+            
           </span>
           
             &mdash; <div class='inline'>
-<p>protocol to use for transport. Default: &#39;tcp&#39;</p>
+<p>protocol for transport.</p>
 </div>
           
         </li>
@@ -524,10 +543,13 @@
           <span class="type">(<tt>String</tt>)</span>
           <span class="default">
             
+              &mdash; default:
+              <tt>&#39;127.0.0.1&#39;</tt>
+            
           </span>
           
             &mdash; <div class='inline'>
-<p>address to use for endpoint. Default: &#39;127.0.0.1&#39;</p>
+<p>address for endpoint.</p>
 </div>
           
         </li>
@@ -537,10 +559,13 @@
           <span class="type">(<tt>Fixnum</tt>)</span>
           <span class="default">
             
+              &mdash; default:
+              <tt>5555</tt>
+            
           </span>
           
             &mdash; <div class='inline'>
-<p>port to use for endpoint. Default: 5555</p>
+<p>port for endpoint.</p>
 </div>
           
         </li>
@@ -555,18 +580,18 @@
       <pre class="lines">
 
 
+26
+27
+28
+29
 30
 31
 32
 33
-34
-35
-36
-37
-38</pre>
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fail'>fail</span> <span class='const'>ArgumentError</span> <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='symbol'>:bind</span><span class='comma'>,</span> <span class='symbol'>:connect</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_mode'>mode</span>
@@ -781,15 +806,15 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>&#39;localhost&#39; does not always work as expected. Prefer
-&#39;127.0.0.1&#39;</p>
+<p>An address of &#39;localhost&#39; is not reliable on all platforms. Prefer
+&#39;127.0.0.1&#39; instead.</p>
 </div>
   </div>
 
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>`port` is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
+<p>port is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
 </div>
   </div>
 
@@ -814,7 +839,7 @@
       
         &mdash;
         <div class='inline'>
-<p>protocol to use for transport. Default: &#39;tcp&#39;</p>
+<p>(&#39;tcp&#39;) protocol for transport.</p>
 </div>
       
     </li>
@@ -830,7 +855,7 @@
       
         &mdash;
         <div class='inline'>
-<p>address to use for endpoint. Default: &#39;127.0.0.1&#39;</p>
+<p>(&#39;127.0.0.1&#39;) address for endpoint.</p>
 </div>
       
     </li>
@@ -846,7 +871,7 @@
       
         &mdash;
         <div class='inline'>
-<p>port to use for endpoint. Default: 5555</p>
+<p>(5555) port for endpoint.</p>
 </div>
       
     </li>
@@ -878,14 +903,14 @@
       <pre class="lines">
 
 
+85
+86
+87
 88
-89
-90
-91
-92</pre>
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bind'>bind</span><span class='lparen'>(</span><span class='label'>protocol:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tcp</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>address:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>port:</span> <span class='int'>5555</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_protocol'>protocol</span> <span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_address'>address</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -912,7 +937,7 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>`port` is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
+<p>port is ignored unless protocol is either &#39;tcp&#39; or &#39;udp&#39;.</p>
 </div>
   </div>
 
@@ -937,7 +962,7 @@
       
         &mdash;
         <div class='inline'>
-<p>protocol to use for transport. Default: &#39;tcp&#39;</p>
+<p>(&#39;tcp&#39;) protocol for transport.</p>
 </div>
       
     </li>
@@ -953,7 +978,7 @@
       
         &mdash;
         <div class='inline'>
-<p>address to use for endpoint. Default: &#39;127.0.0.1&#39;</p>
+<p>(&#39;127.0.0.1&#39;) address for endpoint.</p>
 </div>
       
     </li>
@@ -969,7 +994,7 @@
       
         &mdash;
         <div class='inline'>
-<p>port to use for endpoint. Default: 5555</p>
+<p>(5555) port for endpoint.</p>
 </div>
       
     </li>
@@ -1001,19 +1026,110 @@
       <pre class="lines">
 
 
+100
+101
+102
 103
-104
-105
-106
-107</pre>
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_connect'>connect</span><span class='lparen'>(</span><span class='label'>protocol:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tcp</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>address:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>port:</span> <span class='int'>5555</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_protocol'>protocol</span> <span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_address'>address</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_port'>port</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>tcp</span><span class='words_sep'> </span><span class='tstring_content'>udp</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_protocol'>protocol</span>
   <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_connect'>connect</span><span class='lparen'>(</span><span class='id identifier rubyid_endpoint'>endpoint</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="listen-instance_method">
+  
+    - (<tt>void</tt>) <strong>listen</strong> {|message| ... }
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+<p>By default, waits for a message and prints it to STDOUT.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>message passes the message received to the block.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>message</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the message received.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+113
+114
+115
+116
+117
+118
+119
+120
+121</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 113</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span>
+  <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+      <span class='kw'>yield</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_receive'>receive</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1152,19 +1268,19 @@
       <pre class="lines">
 
 
+63
+64
+65
+66
 67
 68
 69
 70
 71
-72
-73
-74
-75
-76</pre>
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_receive'>receive</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
@@ -1196,12 +1312,12 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>If `message` is not a String, `encode` must convert it to one.</p>
+<p>If message is not a String, #encode must convert it to one.</p>
 </div>
   </div>
 
 
-<p>Sends a message on the socket.</p>
+<p>Sends a message to the socket.</p>
 
 
   </div>
@@ -1295,13 +1411,13 @@
       <pre class="lines">
 
 
-50
-51
-52
-53</pre>
+46
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:encode</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='ivar'>@encode</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='id identifier rubyid_message'>message</span>
@@ -1317,7 +1433,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Jan  9 14:54:17 2015 by
+  Generated on Sun Jan 11 14:20:10 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
