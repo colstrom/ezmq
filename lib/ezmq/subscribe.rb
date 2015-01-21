@@ -38,7 +38,7 @@ module EZMQ
       message = ''
       @socket.recv_string message
 
-      message = message.match(/^(?<topic>[^\ ]*)\s(?<body>.*)/)
+      message = message.match(/^(?<topic>[^\ ]*)\ (?<body>.*)/)
 
       decoded = (options[:decode] || @decode).call message['body']
       if block_given?
