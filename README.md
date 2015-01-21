@@ -86,10 +86,10 @@ Publishes an endless stream of 'foo's with a topic of 'foorever'.
 ```
 require 'ezmq'
 
-publisher = EZMQ.Publisher.new topic: 'foorever'
+publisher = EZMQ.Publisher.new
 
 loop do
-  publisher.send 'foo'
+  publisher.send 'foo', topic: 'foorever'
 end
 ```
 

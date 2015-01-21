@@ -21,6 +21,52 @@ module EZMQ
       subscribe options[:topic] if options[:topic]
     end
 
+    # Receive a message from the socket.
+    #
+    # @note This method blocks until a message arrives.
+    #
+    # @param [Hash] options optional parameters.
+    # @option options [lambda] decode how to decode the message.
+    #
+    # @yield [message, topic] passes the message body and topic to the block.
+    # @yieldparam [Object] message the message received (decoded).
+    # @yieldparam [String] topic the topic of the message.
+    #
+    # @return [Object] the message received (decoded).
+    #
+    def receive(**options)
+      message = ''
+      @socket.recv_string message
+
+      message = message.match(/^(?<topic>[^\ ]*)\s(?<body>.*)/)
+
+      decoded = (options[:decode] || @decode).call message['body']
+      if block_given?
+        yield decoded, message['topic']
+      else
+        [decoded, message['topic']]
+      end
+    end
+
+    # By default, waits for a message and prints it to STDOUT.
+    #
+    # @yield [message, topic] passes the message body and topic to the block.
+    # @yieldparam [String] message the message received.
+    # @yieldparam [String] topic the topic of the message.
+    #
+    # @return [void]
+    #
+    def listen
+      loop do
+        if block_given?
+          yield(*receive)
+        else
+          message, topic = receive
+          puts "#{ topic } #{ message }"
+        end
+      end
+    end
+
     # Establishes a new message filter on the socket.
     #
     # @note By default, a Subscriber filters all incoming messages. Without
