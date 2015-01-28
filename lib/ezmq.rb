@@ -1,4 +1,5 @@
 require 'ffi-rzmq'
+require_relative 'ezmq/context'
 require_relative 'ezmq/socket'
 require_relative 'ezmq/request'
 require_relative 'ezmq/reply'

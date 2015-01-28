@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'ezmq'
-  gem.version     = '0.3.3'
+  gem.version     = '0.3.4'
   gem.licenses    = 'MIT'
   gem.authors     = ['Chris Olstrom']
   gem.email       = 'chris@olstrom.com'

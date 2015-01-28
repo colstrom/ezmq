@@ -1,3 +1,5 @@
+require_relative 'context'
+
 # Syntactic sugar for 0MQ, because Ruby shouldn't feel like C.
 module EZMQ
   # Wrapper class to simplify 0MQ sockets.
@@ -23,7 +25,7 @@ module EZMQ
     #
     def initialize(mode, type, **options)
       fail ArgumentError unless %i(bind connect).include? mode
-      @context = options[:context] || ZMQ::Context.new
+      @context = options[:context] || EZMQ::Context.new
       @socket = @context.socket type
       @encode = options[:encode] || -> m { m }
       @decode = options[:decode] || -> m { m }
