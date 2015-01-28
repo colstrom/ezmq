@@ -22,12 +22,12 @@ module EZMQ
     # @return [Socket] a new instance of Socket.
     #
     def initialize(mode, type, **options)
-      fail ArgumentError unless [:bind, :connect].include? mode
+      fail ArgumentError unless %i(bind connect).include? mode
       @context = options[:context] || ZMQ::Context.new
       @socket = @context.socket type
       @encode = options[:encode] || -> m { m }
       @decode = options[:decode] || -> m { m }
-      endpoint = options.select { |k, _| [:protocol, :address, :port].include? k }
+      endpoint = options.select { |k, _| %i(protocol address port).include? k }
       method(mode).call endpoint
     end
 
@@ -69,27 +69,15 @@ module EZMQ
       end
     end
 
-    # Binds the socket to the given address.
-    #
-    # @param [String] protocol ('tcp') protocol for transport.
-    # @param [String] address ('127.0.0.1') address for endpoint.
-    # @note An address of 'localhost' is not reliable on all platforms.
-    #   Prefer '127.0.0.1' instead.
-    # @param [Fixnum] port (5555) port for endpoint.
-    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
-    #
-    # @return [Boolean] was binding successful?
-    #
-    def bind(protocol: 'tcp', address: '127.0.0.1', port: 5555)
-      endpoint = "#{ protocol }://#{ address }"
-      endpoint = "#{ endpoint }:#{ port }" if %w(tcp udp).include? protocol
-      @socket.bind(endpoint) == 0
-    end
-
     # Connects the socket to the given address.
     #
+    # @note This method can be called as #bind, in which case it binds to the
+    #   specified address instead.
+    #
     # @param [String] protocol ('tcp') protocol for transport.
     # @param [String] address ('127.0.0.1') address for endpoint.
+    # @note Binding to 'localhost' is not consistent on all platforms.
+    #   Prefer '127.0.0.1' instead.
     # @param [Fixnum] port (5555) port for endpoint.
     # @note port is ignored unless protocol is either 'tcp' or 'udp'.
     #
@@ -98,8 +86,10 @@ module EZMQ
     def connect(protocol: 'tcp', address: '127.0.0.1', port: 5555)
       endpoint = "#{ protocol }://#{ address }"
       endpoint = "#{ endpoint }:#{ port }" if %w(tcp udp).include? protocol
-      @socket.connect(endpoint) == 0
+      @socket.method(__callee__).call(endpoint) == 0
     end
+
+    alias_method :bind, :connect
 
     # By default, waits for a message and prints it to STDOUT.
     #

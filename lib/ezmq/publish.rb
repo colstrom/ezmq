@@ -25,7 +25,8 @@ module EZMQ
     # @return [Fixnum] the size of the message.
     #
     def send(message = '', topic: '', **options)
-      @socket.send_string "#{ topic } #{ (options[:encode] || @encode).call message }"
+      message = "#{ topic } #{ (options[:encode] || @encode).call message }"
+      @socket.send_string message
     end
   end
 end
