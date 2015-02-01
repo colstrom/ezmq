@@ -19,7 +19,7 @@ module EZMQ
     # @option options [String] protocol ('tcp') protocol for transport.
     # @option options [String] address ('127.0.0.1') address for endpoint.
     # @option options [Fixnum] port (5555) port for endpoint.
-    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
+    # @note port is ignored unless protocol is one of 'tcp', 'pgm' or 'epgm'.
     #
     # @return [Socket] a new instance of Socket.
     #
