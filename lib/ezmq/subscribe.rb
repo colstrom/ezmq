@@ -4,8 +4,6 @@ require_relative 'socket'
 module EZMQ
   # Subscribe socket that listens for messages with an optional topic.
   class Subscriber < EZMQ::Socket
-    attr_accessor :action
-
     # Creates a new Subscriber socket.
     #
     # @note The default behaviour is to output and messages received to STDOUT.

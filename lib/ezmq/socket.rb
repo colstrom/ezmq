@@ -81,13 +81,13 @@ module EZMQ
     # @note Binding to 'localhost' is not consistent on all platforms.
     #   Prefer '127.0.0.1' instead.
     # @param [Fixnum] port (5555) port for endpoint.
-    # @note port is ignored unless protocol is either 'tcp' or 'udp'.
+    # @note port is ignored unless protocol is one of 'tcp', 'pgm' or 'epgm'.
     #
     # @return [Boolean] was connection successful?
     #
     def connect(protocol: 'tcp', address: '127.0.0.1', port: 5555)
       endpoint = "#{ protocol }://#{ address }"
-      endpoint = "#{ endpoint }:#{ port }" if %w(tcp udp).include? protocol
+      endpoint = "#{ endpoint }:#{ port }" if %w(tcp pgm epgm).include? protocol
       @socket.method(__callee__).call(endpoint) == 0
     end
 
