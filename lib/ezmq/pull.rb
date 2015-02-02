@@ -2,8 +2,8 @@ require_relative 'socket'
 
 # Syntactic sugar for 0MQ, because Ruby shouldn't feel like C.
 module EZMQ
-  # Pull socket that receives messages but does not send them. Pullers can 
-  #   connect to multiple Pushers, and will fair-queue messages from available 
+  # Pull socket that receives messages but does not send them. Pullers can
+  #   connect to multiple Pushers, and will fair-queue messages from available
   #   sources.
   class Puller < EZMQ::Socket
     # Creates a new Puller socket.
