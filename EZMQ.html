@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/ezmq/push.rb<span class="defines">,<br />
-  lib/ezmq/pull.rb,<br /> lib/ezmq/reply.rb,<br /> lib/ezmq/socket.rb,<br /> lib/ezmq/publish.rb,<br /> lib/ezmq/request.rb,<br /> lib/ezmq/context.rb,<br /> lib/ezmq/subscribe.rb</span>
+  lib/ezmq/pair.rb,<br /> lib/ezmq/pull.rb,<br /> lib/ezmq/reply.rb,<br /> lib/ezmq/socket.rb,<br /> lib/ezmq/publish.rb,<br /> lib/ezmq/request.rb,<br /> lib/ezmq/context.rb,<br /> lib/ezmq/subscribe.rb</span>
 </dd>
   
 </dl>
@@ -103,7 +103,7 @@
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="EZMQ/Client.html" title="EZMQ::Client (class)">Client</a></span>, <span class='object_link'><a href="EZMQ/Context.html" title="EZMQ::Context (class)">Context</a></span>, <span class='object_link'><a href="EZMQ/Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span>, <span class='object_link'><a href="EZMQ/Puller.html" title="EZMQ::Puller (class)">Puller</a></span>, <span class='object_link'><a href="EZMQ/Pusher.html" title="EZMQ::Pusher (class)">Pusher</a></span>, <span class='object_link'><a href="EZMQ/Server.html" title="EZMQ::Server (class)">Server</a></span>, <span class='object_link'><a href="EZMQ/Socket.html" title="EZMQ::Socket (class)">Socket</a></span>, <span class='object_link'><a href="EZMQ/Subscriber.html" title="EZMQ::Subscriber (class)">Subscriber</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="EZMQ/Client.html" title="EZMQ::Client (class)">Client</a></span>, <span class='object_link'><a href="EZMQ/Context.html" title="EZMQ::Context (class)">Context</a></span>, <span class='object_link'><a href="EZMQ/Pair.html" title="EZMQ::Pair (class)">Pair</a></span>, <span class='object_link'><a href="EZMQ/Publisher.html" title="EZMQ::Publisher (class)">Publisher</a></span>, <span class='object_link'><a href="EZMQ/Puller.html" title="EZMQ::Puller (class)">Puller</a></span>, <span class='object_link'><a href="EZMQ/Pusher.html" title="EZMQ::Pusher (class)">Pusher</a></span>, <span class='object_link'><a href="EZMQ/Server.html" title="EZMQ::Server (class)">Server</a></span>, <span class='object_link'><a href="EZMQ/Socket.html" title="EZMQ::Socket (class)">Socket</a></span>, <span class='object_link'><a href="EZMQ/Subscriber.html" title="EZMQ::Subscriber (class)">Subscriber</a></span>
     
   
 </p>
@@ -114,12 +114,144 @@
 
 
 
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_linked_pair-class_method" title="create_linked_pair (class method)">+ (Array&lt;EZMQ::Pair&gt;) <strong>create_linked_pair</strong>(**options) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a pair of EZMQ::Pair sockets connected to each other.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="create_linked_pair-class_method">
+  
+    + (<tt>Array&lt;<span class='object_link'><a href="EZMQ/Pair.html" title="EZMQ::Pair (class)">EZMQ::Pair</a></span>&gt;</tt>) <strong>create_linked_pair</strong>(**options) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a pair of EZMQ::Pair sockets connected to each other.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>optional parameters.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="EZMQ/Pair.html" title="EZMQ::Pair (class)">EZMQ::Pair</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="EZMQ/Socket.html" title="EZMQ::Socket (class)">EZMQ::Socket for optional parameters.</a></span></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33
+34
+35
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ezmq/pair.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_linked_pair'>create_linked_pair</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:context</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Context</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:protocol</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>inproc</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:address</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:context</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_context'>context</span><span class='period'>.</span><span class='id identifier rubyid_address'>address</span>
+  <span class='qsymbols_beg'>%i(</span><span class='tstring_content'>bind</span><span class='words_sep'> </span><span class='tstring_content'>connect</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_mode'>mode</span><span class='op'>|</span>
+    <span class='const'>EZMQ</span><span class='op'>::</span><span class='const'>Pair</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_mode'>mode</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 </div>
 
     <div id="footer">
-  Generated on Wed Jan 28 09:40:16 2015 by
+  Generated on Mon Feb  2 15:37:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
