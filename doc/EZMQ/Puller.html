@@ -104,7 +104,10 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Pull socket that receives messages but does not send them.</p>
+<p>Pull socket that receives messages but does not send them. Pullers can</p>
+
+<pre class="code ruby"><code class="ruby">connect to multiple Pushers, and will fair-queue messages from available
+sources.</code></pre>
 
 
   </div>
@@ -246,12 +249,12 @@
       <pre class="lines">
 
 
-15
-16
-17</pre>
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ezmq/pull.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/ezmq/pull.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='symbol'>:bind</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_mode'>mode</span><span class='comma'>,</span> <span class='const'>ZMQ</span><span class='op'>::</span><span class='const'>PULL</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span>
@@ -267,7 +270,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Jan 31 17:36:28 2015 by
+  Generated on Mon Feb  2 15:37:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
