@@ -16,10 +16,10 @@ module EZMQ
     #   (one will be created if not provided).
     # @option options [lambda] encode how to encode messages.
     # @option options [lambda] decode how to decode messages.
-    # @option options [String] protocol ('tcp') protocol for transport.
+    # @option options [String] transport ('tcp') transport for transport.
     # @option options [String] address ('127.0.0.1') address for endpoint.
     # @option options [Fixnum] port (5555) port for endpoint.
-    # @note port is ignored unless protocol is one of 'tcp', 'pgm' or 'epgm'.
+    # @note port is ignored unless transport is one of 'tcp', 'pgm' or 'epgm'.
     #
     # @return [Socket] a new instance of Socket.
     #
@@ -29,7 +29,7 @@ module EZMQ
       @socket = @context.socket type
       @encode = options[:encode] || -> m { m }
       @decode = options[:decode] || -> m { m }
-      endpoint = options.select { |k, _| %i(protocol address port).include? k }
+      endpoint = options.select { |k, _| %i(transport address port).include? k }
       method(mode).call endpoint
     end
 
@@ -76,18 +76,18 @@ module EZMQ
     # @note This method can be called as #bind, in which case it binds to the
     #   specified address instead.
     #
-    # @param [String] protocol ('tcp') protocol for transport.
+    # @param [String] transport ('tcp') transport for transport.
     # @param [String] address ('127.0.0.1') address for endpoint.
     # @note Binding to 'localhost' is not consistent on all platforms.
     #   Prefer '127.0.0.1' instead.
     # @param [Fixnum] port (5555) port for endpoint.
-    # @note port is ignored unless protocol is one of 'tcp', 'pgm' or 'epgm'.
+    # @note port is ignored unless transport is one of 'tcp', 'pgm' or 'epgm'.
     #
     # @return [Boolean] was connection successful?
     #
-    def connect(protocol: 'tcp', address: '127.0.0.1', port: 5555)
-      endpoint = "#{ protocol }://#{ address }"
-      endpoint = "#{ endpoint }:#{ port }" if %w(tcp pgm epgm).include? protocol
+    def connect(transport: 'tcp', address: '127.0.0.1', port: 5555)
+      endpoint = "#{ transport }://#{ address }"
+      endpoint = "#{ endpoint }:#{ port }" if %w(tcp pgm epgm).include? transport
       @socket.method(__callee__).call(endpoint) == 0
     end
 
