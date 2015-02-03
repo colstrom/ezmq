@@ -51,3 +51,14 @@ end
 task :documentation do
   sh 'inch'
 end
+
+task generate: [:documents, :graphs]
+
+task :documents do
+  sh 'yard'
+end
+
+task :graphs  do
+  sh 'bundle viz'
+  sh 'yard graph | dot -Tpng > lib_graph.png'
+end
