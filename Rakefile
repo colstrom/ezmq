@@ -7,12 +7,11 @@ require 'roodi_task'
 
 task default: [:test]
 
-task test: [:rspec]
+task test: [:kintama]
 
-desc 'Run Test Suite with RSpec'
-RSpec::Core::RakeTask.new(:rspec) do |task|
-  task.patterns = ['spec/**/*.rb']
-  task.fail_on_error = false
+desc 'Run Test Suite'
+task :kintama do
+  sh 'ruby tests/ezmq.rb'
 end
 
 task audit: [:style, :complexity, :duplication, :design, :documentation]
