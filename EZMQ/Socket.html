@@ -245,7 +245,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#connect-instance_method" title="#connect (instance method)">- (Boolean) <strong>connect</strong>(protocol: &#39;tcp&#39;, address: &#39;127.0.0.1&#39;, port: 5555) </a>
+      <a href="#connect-instance_method" title="#connect (instance method)">- (Boolean) <strong>connect</strong>(transport: :tcp, address: &#39;127.0.0.1&#39;, port: 5555) </a>
     
 
     
@@ -312,7 +312,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>By default, waits for a message and prints it to STDOUT.</p>
+<p>Like receive, but doesn&#39;t stop at one message.</p>
 </div></span>
   
 </li>
@@ -387,8 +387,7 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>port is ignored unless protocol is one of &#39;tcp&#39;, &#39;pgm&#39; or
-&#39;epgm&#39;.</p>
+<p>port is ignored unless transport is one of :tcp, :pgm or :epgm</p>
 </div>
   </div>
 
@@ -502,17 +501,17 @@
         </li>
       
         <li>
-          <span class="name">protocol</span>
-          <span class="type">(<tt>String</tt>)</span>
+          <span class="name">transport</span>
+          <span class="type">(<tt>Symbol</tt>)</span>
           <span class="default">
             
               &mdash; default:
-              <tt>&#39;tcp&#39;</tt>
+              <tt>:tcp</tt>
             
           </span>
           
             &mdash; <div class='inline'>
-<p>protocol for transport.</p>
+<p>transport for transport.</p>
 </div>
           
         </li>
@@ -578,7 +577,7 @@
   <span class='ivar'>@socket</span> <span class='op'>=</span> <span class='ivar'>@context</span><span class='period'>.</span><span class='id identifier rubyid_socket'>socket</span> <span class='id identifier rubyid_type'>type</span>
   <span class='ivar'>@encode</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:encode</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
   <span class='ivar'>@decode</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:decode</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_m'>m</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_m'>m</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid__'>_</span><span class='op'>|</span> <span class='qsymbols_beg'>%i(</span><span class='tstring_content'>protocol</span><span class='words_sep'> </span><span class='tstring_content'>address</span><span class='words_sep'> </span><span class='tstring_content'>port</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_k'>k</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid__'>_</span><span class='op'>|</span> <span class='qsymbols_beg'>%i(</span><span class='tstring_content'>transport</span><span class='words_sep'> </span><span class='tstring_content'>address</span><span class='words_sep'> </span><span class='tstring_content'>port</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_k'>k</span> <span class='rbrace'>}</span>
   <span class='id identifier rubyid_method'>method</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='id identifier rubyid_endpoint'>endpoint</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -773,7 +772,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="connect-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>connect</strong>(protocol: &#39;tcp&#39;, address: &#39;127.0.0.1&#39;, port: 5555) 
+    - (<tt>Boolean</tt>) <strong>connect</strong>(transport: :tcp, address: &#39;127.0.0.1&#39;, port: 5555) 
   
 
   
@@ -805,8 +804,7 @@ address instead.</p>
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>port is ignored unless protocol is one of &#39;tcp&#39;, &#39;pgm&#39; or
-&#39;epgm&#39;.</p>
+<p>port is ignored unless transport is one of :tcp, :pgm or :epgm</p>
 </div>
   </div>
 
@@ -822,16 +820,16 @@ address instead.</p>
   
     <li>
       
-        <span class='name'>protocol</span>
+        <span class='name'>transport</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Symbol</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>(&#39;tcp&#39;) protocol for transport.</p>
+<p>(:tcp) transport for transport.</p>
 </div>
       
     </li>
@@ -904,9 +902,9 @@ address instead.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/ezmq/socket.rb', line 88</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_connect'>connect</span><span class='lparen'>(</span><span class='label'>protocol:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tcp</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>address:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>port:</span> <span class='int'>5555</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_protocol'>protocol</span> <span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_address'>address</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_port'>port</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>tcp</span><span class='words_sep'> </span><span class='tstring_content'>pgm</span><span class='words_sep'> </span><span class='tstring_content'>epgm</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_protocol'>protocol</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_connect'>connect</span><span class='lparen'>(</span><span class='label'>transport:</span> <span class='symbol'>:tcp</span><span class='comma'>,</span> <span class='label'>address:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>port:</span> <span class='int'>5555</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_transport'>transport</span> <span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_address'>address</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_endpoint'>endpoint</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_port'>port</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='qsymbols_beg'>%i(</span><span class='tstring_content'>tcp</span><span class='words_sep'> </span><span class='tstring_content'>pgm</span><span class='words_sep'> </span><span class='tstring_content'>epgm</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_transport'>transport</span>
   <span class='ivar'>@socket</span><span class='period'>.</span><span class='id identifier rubyid_method'>method</span><span class='lparen'>(</span><span class='id identifier rubyid___callee__'>__callee__</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_endpoint'>endpoint</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>0</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -926,7 +924,7 @@ address instead.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>By default, waits for a message and prints it to STDOUT.</p>
+<p>Like receive, but doesn&#39;t stop at one message.</p>
 
 
   </div>
@@ -982,22 +980,14 @@ address instead.</p>
 104
 105
 106
-107
-108
-109
-110
-111</pre>
+107</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/ezmq/socket.rb', line 103</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_listen'>listen</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
-      <span class='kw'>yield</span> <span class='id identifier rubyid_receive'>receive</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_receive'>receive</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='id identifier rubyid_receive'>receive</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1302,7 +1292,7 @@ address instead.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb  2 15:37:51 2015 by
+  Generated on Tue Feb  3 09:55:04 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.0.0).
 </div>
