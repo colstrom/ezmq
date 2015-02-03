@@ -25,7 +25,9 @@ Waits for a request, replies with the same request.
 require 'ezmq'
 
 server = EZMQ::Server.new
-server.listen
+server.listen do |message|
+  message
+end
 ```
 
 Synchronous Client Request
@@ -62,7 +64,9 @@ require 'ezmq'
 require 'json'
 
 server = EZMQ::Server.new encode: -> m { JSON.dump m }, decode: -> m { JSON.load m }
-server.listen
+server.listen do |message|
+  message
+end
 ```
 
 JSON Synchronous Client Request
@@ -101,7 +105,9 @@ Subscribes to topic 'foorever', prints any messages it receives.
 require 'ezmq'
 
 subscriber = EZMQ.Subscriber.new topic: 'foorever'
-subscriber.listen
+subscriber.listen do |message, topic|
+  puts "[#{ topic }] #{ message }"
+end
 ````
 
 Pipeline Work Generator
@@ -159,9 +165,11 @@ require 'ezmq'
 require 'json'
 
 collector = EZMQ::Puller.new port: 5556
-collector.listen
+collector.listen do |message|
+  puts message
+end
 ```
-
+    
 Operating System Notes
 ======================
 
