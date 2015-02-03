@@ -93,20 +93,16 @@ module EZMQ
 
     alias_method :bind, :connect
 
-    # By default, waits for a message and prints it to STDOUT.
+    # Like receive, but doesn't stop at one message.
     #
     # @yield message passes the message received to the block.
     # @yieldparam [String] message the message received.
     #
     # @return [void]
     #
-    def listen
+    def listen(&block)
       loop do
-        if block_given?
-          yield receive
-        else
-          puts receive
-        end
+        block.call receive
       end
     end
   end

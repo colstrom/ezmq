@@ -46,7 +46,7 @@ module EZMQ
       end
     end
 
-    # By default, waits for a message and prints it to STDOUT.
+    # Like receive, but doesn't stop at one message.
     #
     # @yield [message, topic] passes the message body and topic to the block.
     # @yieldparam [String] message the message received.
@@ -54,14 +54,9 @@ module EZMQ
     #
     # @return [void]
     #
-    def listen
+    def listen(&block)
       loop do
-        if block_given?
-          yield(*receive)
-        else
-          message, topic = receive
-          puts "#{ topic } #{ message }"
-        end
+        block.call(*receive)
       end
     end
 
