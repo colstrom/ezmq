@@ -87,7 +87,7 @@ module EZMQ
     #
     def connect(transport: :tcp, address: '127.0.0.1', port: 5555)
       endpoint = "#{ transport }://#{ address }"
-      endpoint = "#{ endpoint }:#{ port }" if %i(tcp pgm epgm).include? transport
+      endpoint << ":#{ port }" if %i(tcp pgm epgm).include? transport
       @socket.method(__callee__).call(endpoint) == 0
     end
 
