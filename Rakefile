@@ -2,7 +2,6 @@
 
 require 'rubocop/rake_task'
 require 'reek/rake/task'
-require 'rspec/core/rake_task'
 require 'roodi_task'
 
 task default: [:test]
