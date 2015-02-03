@@ -24,4 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'churn'
   gem.add_development_dependency 'yard'
   gem.add_development_dependency 'inch'
+  gem.add_development_dependency 'kintama'
+  gem.add_development_dependency 'simplecov'
+  gem.add_development_dependency 'coveralls'
 end
