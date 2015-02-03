@@ -16,7 +16,7 @@ module EZMQ
     #   (one will be created if not provided).
     # @option options [lambda] encode how to encode messages.
     # @option options [lambda] decode how to decode messages.
-    # @option options [String] transport (:tcp) transport for transport.
+    # @option options [Symbol] transport (:tcp) transport for transport.
     # @option options [String] address ('127.0.0.1') address for endpoint.
     # @option options [Fixnum] port (5555) port for endpoint.
     # @note port is ignored unless transport is one of :tcp, :pgm or :epgm
@@ -76,7 +76,7 @@ module EZMQ
     # @note This method can be called as #bind, in which case it binds to the
     #   specified address instead.
     #
-    # @param [String] transport (:tcp) transport for transport.
+    # @param [Symbol] transport (:tcp) transport for transport.
     # @param [String] address ('127.0.0.1') address for endpoint.
     # @note Binding to 'localhost' is not consistent on all platforms.
     #   Prefer '127.0.0.1' instead.
