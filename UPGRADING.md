@@ -1,3 +1,12 @@
+Upgrading from 0.3.x to 0.4+
+----------------------------
+
+#listen on EZMQ::Socket and EZMQ::Subscriber now requires a block, previously it was optional.
+
+options[:protocol] has been renamed to options[:transport], to be correct.
+
+options[:transport] is expected to be a :symbol, not a 'string'.
+
 Upgrading from 0.1.x to 0.2+
 ----------------------------
 
