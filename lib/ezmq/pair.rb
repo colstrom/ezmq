@@ -30,7 +30,7 @@ module EZMQ
   #
   def self.create_linked_pair(**options)
     options[:context] ||= EZMQ::Context.new
-    options[:transport] ||= 'inproc'
+    options[:transport] ||= :inproc
     options[:address] ||= options[:context].context.address
     %i(bind connect).map do |mode|
       EZMQ::Pair.new mode, options

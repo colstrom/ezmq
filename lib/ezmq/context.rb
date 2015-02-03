@@ -10,7 +10,7 @@ module EZMQ
     #   allow multiple sockets to share access to system resources, and an
     #   entire context can be terminated, closing all sockets within it.
     #
-    # Contexts are useful when dealing with the 'inproc' transport.
+    # Contexts are useful when dealing with the :inproc transport.
     #   Any sockets that need to communicate in-process must share a context.
     #
     # @return [Context] a new instance of Context.
