@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'simplecov'
+require 'coveralls'
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.command_name 'Kintama'
 SimpleCov.start { add_filter '/tests/' }
 
