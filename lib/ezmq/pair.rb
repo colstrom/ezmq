@@ -22,10 +22,10 @@ module EZMQ
   end
 
   # Returns a pair of EZMQ::Pair sockets connected to each other.
-  # 
+  #
   # @param [Hash] options optional parameters.
   # @see EZMQ::Socket EZMQ::Socket for optional parameters.
-  # 
+  #
   # @return [Array<EZMQ::Pair>]
   #
   def self.create_linked_pair(**options)
