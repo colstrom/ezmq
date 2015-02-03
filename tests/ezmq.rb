@@ -5,7 +5,10 @@ CodeClimate::TestReporter.start
 
 require 'simplecov'
 require 'coveralls'
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
 SimpleCov.command_name 'Kintama'
 SimpleCov.start { add_filter '/tests/' }
 
