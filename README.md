@@ -1,6 +1,8 @@
 [EZMQ (Effortless ZeroMQ)](https://colstrom.github.io/ezmq/)
 ========================
 
+[![Join the chat at https://gitter.im/colstrom/ezmq](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/colstrom/ezmq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Gem Version](https://badge.fury.io/rb/ezmq.svg)](http://badge.fury.io/rb/ezmq)
 [![Dependency Status](https://gemnasium.com/colstrom/ezmq.svg)](https://gemnasium.com/colstrom/ezmq)
 [![Code Climate](https://codeclimate.com/github/colstrom/ezmq/badges/gpa.svg)](https://codeclimate.com/github/colstrom/ezmq)
