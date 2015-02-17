@@ -92,7 +92,7 @@ Publishes an endless stream of 'foo's with a topic of 'foorever'.
 ```
 require 'ezmq'
 
-publisher = EZMQ.Publisher.new
+publisher = EZMQ::Publisher.new
 
 loop do
   publisher.send 'foo', topic: 'foorever'
@@ -106,7 +106,7 @@ Subscribes to topic 'foorever', prints any messages it receives.
 ```
 require 'ezmq'
 
-subscriber = EZMQ.Subscriber.new topic: 'foorever'
+subscriber = EZMQ::Subscriber.new topic: 'foorever'
 subscriber.listen do |message, topic|
   puts "[#{ topic }] #{ message }"
 end
