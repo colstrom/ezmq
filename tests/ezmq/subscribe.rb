@@ -9,6 +9,7 @@ context 'Subscribers' do
         @publisher.send 'message'
         @publisher.send 'message', topic: 'bad'
         @publisher.send 'message', topic: 'good'
+        @publisher.send "message\nmessage", topic: 'multiline'
       end
     end
   end
@@ -21,7 +22,7 @@ context 'Subscribers' do
       messages << message
       topics << topic
     end
-    assert_equal 1000, messages.select { |m| m == 'message' }.size
+    assert_equal 1000, messages.size
     assert topics.include? ''
     assert topics.include? 'bad'
     assert topics.include? 'good'
@@ -74,6 +75,18 @@ context 'Subscribers' do
     end
     assert topics.include? 'good'
     assert_equal false, topics.include?('bad')
+  end
+
+  should 'receive the message as it was sent' do
+    @subscriber.subscribe ''
+    messages = []
+    1000.times do
+      message, _ = @subscriber.receive
+      messages << message
+    end
+    assert_equal 2, messages.uniq.size
+    assert messages.include? 'message'
+    assert messages.include? "message\nmessage"
   end
 
   should 'return the contents of a message with a subscribed topic' do
