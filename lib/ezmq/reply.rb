@@ -6,14 +6,14 @@ module EZMQ
   class Server < EZMQ::Socket
     # Creates a new Server socket.
     #
+    # @param [:bind, :connect] mode (:bind) a mode for the socket.
     # @param [Hash] options optional parameters
-    #
     # @see EZMQ::Socket EZMQ::Socket for optional parameters.
     #
     # @return [Server] a new instance of Server
     #
-    def initialize(**options)
-      super :bind, ZMQ::REP, options
+    def initialize(mode = :bind, **options)
+      super mode, ZMQ::REP, options
     end
 
     # Listens for a request, and responds to it.

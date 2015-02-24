@@ -6,13 +6,14 @@ module EZMQ
   class Publisher < EZMQ::Socket
     # Creates a new Publisher socket.
     #
+    # @param [:bind, :connect] mode (:bind) a mode for the socket.
     # @param [Hash] options optional parameters.
     # @see EZMQ::Socket EZMQ::Socket for optional parameters.
     #
     # @return [Publisher] a new instance of Publisher.
     #
-    def initialize(**options)
-      super :bind, ZMQ::PUB, options
+    def initialize(mode = :bind, **options)
+      super mode, ZMQ::PUB, options
     end
 
     # Sends a message on the socket, with an optional topic.

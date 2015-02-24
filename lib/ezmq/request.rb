@@ -6,13 +6,14 @@ module EZMQ
   class Client < EZMQ::Socket
     # Creates a new Client socket.
     #
+    # @param [:bind, :connect] mode (:connect) a mode for the socket.
     # @param [Hash] options optional parameters.
     # @see EZMQ::Socket EZMQ::Socket for optional parameters.
     #
     # @return [Client] a new instance of Client.
     #
-    def initialize(**options)
-      super :connect, ZMQ::REQ, options
+    def initialize(mode = :connect, **options)
+      super mode, ZMQ::REQ, options
     end
 
     # Sends a message and waits to receive a response.

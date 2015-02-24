@@ -8,14 +8,15 @@ module EZMQ
     #
     # @note The default behaviour is to output and messages received to STDOUT.
     #
+    # @param [:bind, :connect] mode (:connect) a mode for the socket.
     # @param [Hash] options optional parameters.
     # @option options [String] topic a topic to subscribe to.
     # @see EZMQ::Socket EZMQ::Socket for optional parameters.
     #
     # @return [Publisher] a new instance of Publisher.
     #
-    def initialize(**options)
-      super :connect, ZMQ::SUB, options
+    def initialize(mode = :connect, **options)
+      super mode, ZMQ::SUB, options
       subscribe options[:topic] if options[:topic]
     end
 
