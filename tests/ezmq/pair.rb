@@ -13,8 +13,11 @@ context 'Paired sockets' do
   end
 
   should 'return the contents of messages they receive' do
-    @connected.send 'message'
-    assert_equal 'message', @bound.receive
+    messages = ['message', {message: 'test'}]
+    messages.each do |message|
+      @connected.send message
+      assert_equal message, @bound.receive
+    end
   end
 
   should 'yield the contents of messages they receive, if given a block' do
