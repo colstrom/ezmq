@@ -1,3 +1,8 @@
+require 'bundler/setup'
+require 'ezmq'
+require 'kintama'
+require 'timeout'
+
 context 'Paired sockets' do
   setup do
     @bound, @connected = EZMQ.create_linked_pair
@@ -13,11 +18,14 @@ context 'Paired sockets' do
   end
 
   should 'return the contents of messages they receive' do
-    messages = ['message', {message: 'test'}]
-    messages.each do |message|
-      @connected.send message
-      assert_equal message, @bound.receive
-    end
+    @connected.send 'message'
+    assert_equal 'message', @bound.receive
+  end
+
+  should 'pass Hash messages to the encode method' do
+    @connected.encode = -> m { assert_equal({message: 'test'}, m) }
+    @connected.send message: 'test'
+    @connected.encode = -> m { m }
   end
 
   should 'yield the contents of messages they receive, if given a block' do
