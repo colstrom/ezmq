@@ -1,8 +1,3 @@
-require 'bundler/setup'
-require 'ezmq'
-require 'kintama'
-require 'timeout'
-
 context 'Paired sockets' do
   setup do
     @bound, @connected = EZMQ.create_linked_pair
