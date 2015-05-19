@@ -43,7 +43,7 @@ module EZMQ
     #
     # @return [Fixnum] the size of the message.
     #
-    def send(message = '', **options)
+    def send(message, **options)
       encoded = (options[:encode] || @encode).call message
       @socket.send_string encoded
     end
