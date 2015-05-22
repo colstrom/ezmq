@@ -40,6 +40,11 @@ end
 
 task design: [:roodi, :reek]
 
+desc 'Question design decisions with Roodi'
+RoodiTask.new do |task|
+  task.patterns = ['lib/**/*.rb']
+end
+
 desc 'Find Code Smells with Reek'
 Reek::Rake::Task.new(:reek) do |task|
   task.fail_on_error = false
