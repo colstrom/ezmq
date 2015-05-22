@@ -1,5 +1,6 @@
 # require 'simplecov'
 
+require 'bundler/setup'
 require 'rubocop/rake_task'
 require 'reek/rake/task'
 require 'roodi_task'
