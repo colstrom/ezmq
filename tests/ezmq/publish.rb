@@ -18,7 +18,7 @@ context 'Publishers' do
   end
 
   should 'pass Hash messages to the encode method' do
-    @client.encode = -> m { assert_equal({message: 'test'}, m) }
-    @client.request message: 'test'
+    @publisher.encode = -> m { assert_equal({message: 'test'}, m) }
+    @publisher.send message: 'test'
   end
 end
