@@ -16,4 +16,9 @@ context 'Publishers' do
   should 'return the length of messages they send (with a topic)' do
     assert_equal 8, @publisher.send('message')
   end
+
+  should 'pass Hash messages to the encode method' do
+    @client.encode = -> m { assert_equal({message: 'test'}, m) }
+    @client.request message: 'test'
+  end
 end
