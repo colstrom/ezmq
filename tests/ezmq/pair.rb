@@ -20,7 +20,6 @@ context 'Paired sockets' do
   should 'pass Hash messages to the encode method' do
     @connected.encode = -> m { assert_equal({message: 'test'}, m) }
     @connected.send message: 'test'
-    @connected.encode = -> m { m }
   end
 
   should 'yield the contents of messages they receive, if given a block' do
