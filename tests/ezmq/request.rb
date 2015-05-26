@@ -25,4 +25,9 @@ context 'Clients' do
   should 'yield the contents of reply, if given a block' do
     assert_equal 'message', @client.request('message') { |m| m }
   end
+
+  should 'pass Hash messages to the encode method' do
+    @client.encode = -> m { assert_equal({message: 'test'}, m) }
+    @client.request message: 'test'
+  end
 end

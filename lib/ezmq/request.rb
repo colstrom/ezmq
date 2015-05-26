@@ -25,7 +25,7 @@ module EZMQ
     #
     # @return [void] the decoded response message.
     #
-    def request(message = '', **options)
+    def request(message, **options)
       send message, options
       if block_given?
         yield receive options
